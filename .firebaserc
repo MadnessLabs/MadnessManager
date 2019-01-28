@@ -1,5 +1,7 @@
 {
   "projects": {
-    "default": "madness-labs-pwa"
+    "default": "madness-labs-pwa",
+    "dev": "madness-labs-pwa",
+    "live": "madnessenjin-630d7"
   }
 }
