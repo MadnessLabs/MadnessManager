@@ -1,5 +1,8 @@
 {
-  "name": "functions",
+  "name": "@madnesslabs/madnessmanagerapi",
+  "engines": {
+    "node": "8"
+  },
   "scripts": {
     "lint": "tslint --project tsconfig.json",
     "build": "tsc",
