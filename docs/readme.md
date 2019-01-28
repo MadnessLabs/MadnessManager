@@ -11,3 +11,7 @@
 11. Setup CircleCI config
 12. Update firebase functions to use NodeJS 8
 13. Create development branch
+14. Create app for Github (https://developer.github.com/apps/building-github-apps/creating-a-github-app/)
+15. Enable Github authentication in Firebase
+16. Enable Facebook authentication in Firebase
+17. 
