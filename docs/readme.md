@@ -8,3 +8,5 @@
 8. Setup environments
 9. Setup gitignore
 10. Start global services and pass them to router in app-root as props
+11. Setup CircleCI config
+12. 

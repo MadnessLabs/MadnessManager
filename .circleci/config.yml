@@ -1,0 +1,58 @@
+version: 2.0
+jobs:
+  build:
+    branches:
+      only:
+        - development
+        - master
+
+    docker:
+      - image: node:lts
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
+            - v1-dependencies-
+
+      - run:
+          name: Install App Dependencies
+          command: npm install
+
+      - run:
+          name: Install Backend Dependencies
+          command: cd functions && npm install
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+
+      - run:
+          name: Set Live Environment
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              echo 'export FIREBASE_DEPLOY_ENV="live"' >> $BASH_ENV
+            fi
+
+      - run:
+          name: Lint Code
+          command: npm run lint:fix
+
+      - run:
+          name: Run API Tests
+          command: npm run test:api
+
+      - run:
+          name: Build API Documentation
+          command: npm run docs:api
+
+      - run: ./node_modules/.bin/firebase use $FIREBASE_DEPLOY_ENV --token="$FIREBASE_DEPLOY_TOKEN"
+
+      - run: npm run build:$FIREBASE_DEPLOY_ENV --token="$FIREBASE_DEPLOY_TOKEN"
+
+      - run: ./node_modules/.bin/firebase deploy --token="$FIREBASE_DEPLOY_TOKEN"
