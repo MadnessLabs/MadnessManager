@@ -10,3 +10,4 @@
 10. Start global services and pass them to router in app-root as props
 11. Setup CircleCI config
 12. Update firebase functions to use NodeJS 8
+13. Create development branch
