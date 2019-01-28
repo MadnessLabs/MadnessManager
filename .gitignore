@@ -1,6 +1,7 @@
 dist/
 !www/favicon.ico
 www/
+certs/
 
 *~
 *.sw[mnpcod]
@@ -12,11 +13,12 @@ log.txt
 *.sublime-project
 *.sublime-workspace
 
-.stencil/
+.firebase/
 .idea/
 .vscode/
 .sass-cache/
 .versions/
+releases/
 node_modules/
 $RECYCLE.BIN/
 
@@ -24,3 +26,15 @@ $RECYCLE.BIN/
 Thumbs.db
 UserInterfaceState.xcuserstate
 .env
+serviceAccountKey.json
+serviceAccountKey.*.json
+src/global/environment.ts
+src/components.d.ts
+stencil-*.*.*/**
+platforms/
+plugins/
+resources/*.md5
+google-services.json
+GoogleService-Info.plist
+src/index.html
+ul_web_hooks/android/android_web_hook.html
