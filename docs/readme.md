@@ -19,3 +19,4 @@
 19. Implement Database service
 20. Setup auth service
 21. Setup Github login
+22. Setup auth watcher
