@@ -2,6 +2,7 @@ import { Component } from '@stencil/core';
 import firebase from 'firebase/app';
 
 import { ConfigService } from '../../services/config';
+import { DatabaseService } from '../../services/database';
 
 @Component({
   tag: 'app-root',
@@ -11,14 +12,17 @@ export class AppRoot {
 
   globalProps: {
     config: any;
+    database: DatabaseService,
     firebase: firebase.app.App
   };
 
   componentDidLoad() {
     const config = (new ConfigService).get();
+    const app = firebase.initializeApp(config.firebase);
     this.globalProps = {
       config,
-      firebase: firebase.initializeApp(config.firebase)
+      database: new DatabaseService(app),
+      firebase: app
     };
 
     console.log(this.globalProps);

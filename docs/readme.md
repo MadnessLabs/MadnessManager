@@ -16,3 +16,4 @@
 16. Enable Facebook authentication in Firebase
 17. Setup commands for working wtih API
 18. Initialize Firebase and use config service
+19. Implement Database service

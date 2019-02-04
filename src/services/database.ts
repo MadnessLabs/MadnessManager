@@ -1,16 +1,14 @@
 /**
  * @module Services
  */
-// import firebase from 'firebase/app';
-// import 'firebase/firestore';
-
-declare const firebase: any;
+import firebase from 'firebase/app';
+import 'firebase/firestore';
 
 export class DatabaseService {
   service: firebase.firestore.Firestore;
   watchers: any = {};
 
-  constructor() {
+  constructor(firebase: firebase.app.App) {
     const firestore = firebase.firestore();
     firestore.settings({
       timestampsInSnapshots: true
