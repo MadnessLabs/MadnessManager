@@ -9,11 +9,7 @@ export class DatabaseService {
   watchers: any = {};
 
   constructor(firebase: firebase.app.App) {
-    const firestore = firebase.firestore();
-    firestore.settings({
-      timestampsInSnapshots: true
-    });
-    this.service = firestore;
+    this.service = firebase.firestore();
   }
 
   async all(collectionName: string): Promise<any> {

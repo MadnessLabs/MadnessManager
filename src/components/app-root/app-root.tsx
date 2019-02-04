@@ -3,6 +3,7 @@ import firebase from 'firebase/app';
 
 import { ConfigService } from '../../services/config';
 import { DatabaseService } from '../../services/database';
+import { AuthService } from '../../services/auth';
 
 @Component({
   tag: 'app-root',
@@ -11,21 +12,21 @@ import { DatabaseService } from '../../services/database';
 export class AppRoot {
 
   globalProps: {
+    auth: AuthService;
     config: any;
-    database: DatabaseService,
-    firebase: firebase.app.App
+    database: DatabaseService;
+    firebase: firebase.app.App;
   };
 
   componentDidLoad() {
     const config = (new ConfigService).get();
     const app = firebase.initializeApp(config.firebase);
     this.globalProps = {
+      auth: new AuthService(app, config),
       config,
       database: new DatabaseService(app),
       firebase: app
     };
-
-    console.log(this.globalProps);
   }
 
   render() {
@@ -33,6 +34,7 @@ export class AppRoot {
       <ion-app>
         <ion-router useHash={false}>
           <ion-route url="/" component="app-home" componentProps={this.globalProps} />
+          <ion-route url="/login" component="app-login"  componentProps={this.globalProps} />
           <ion-route url="/profile/:name" component="app-profile"  componentProps={this.globalProps} />
         </ion-router>
         <ion-nav />

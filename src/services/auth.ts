@@ -5,8 +5,6 @@ import { TwitterConnect } from '@ionic-native/twitter-connect';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 
-// declare const firebase: any;
-
 interface IFireEnjinAuthConfig {
   authLocalStorageKey?: string;
   firebase?: {
@@ -37,18 +35,13 @@ export class AuthService {
   };
   public session: any;
   private facebook: any = Facebook;
+  protected firebase: firebase.app.App;
   private googlePlus: any = GooglePlus;
   private twitter: any = TwitterConnect;
 
-  constructor(config?: IFireEnjinAuthConfig) {
-    let firstRun = false;
+  constructor(firebase: firebase.app.App, config?: IFireEnjinAuthConfig) {
     this.config = { ...this.config, ...config };
-
-    if (firebase.apps.length === 0) {
-      firebase.initializeApp(config.firebase);
-      firstRun = true;
-    }
-
+    this.firebase = firebase;
     if (
       !this.config.googlePlus ||
       !this.config.googlePlus.options ||
@@ -59,20 +52,17 @@ export class AuthService {
       );
     }
 
-    if (firstRun) {
-      this.onEmailLink(window.location.href);
-    }
+    this.onEmailLink(window.location.href);
   }
 
   async onEmailLink(link) {
-    console.log('Coming from: ', link);
-    if (firebase.auth().isSignInWithEmailLink(link)) {
+    if (this.firebase.auth().isSignInWithEmailLink(link)) {
       let email = window.localStorage.getItem('emailForSignIn');
       if (!email) {
         email = window.prompt('Please provide your email for confirmation');
       }
 
-      const authUser = await firebase.auth().signInWithEmailLink(email, link);
+      const authUser = await this.firebase.auth().signInWithEmailLink(email, link);
       window.localStorage.removeItem('emailForSignIn');
 
       this.emitLoggedInEvent(authUser);
@@ -111,21 +101,21 @@ export class AuthService {
     phoneNumber = '+' + phoneNumber;
     window.localStorage.setItem('phoneForSignIn', phoneNumber);
 
-    return firebase.auth().signInWithPhoneNumber(phoneNumber, capId);
+    return this.firebase.auth().signInWithPhoneNumber(phoneNumber, capId);
   }
 
   withEmailLink(email: string, actionCodeSettings: any) {
     window.localStorage.setItem('emailForSignIn', email);
 
-    return firebase.auth().sendSignInLinkToEmail(email, actionCodeSettings);
+    return this.firebase.auth().sendSignInLinkToEmail(email, actionCodeSettings);
   }
 
   anonymously() {
-    return firebase.auth().signInAnonymously();
+    return this.firebase.auth().signInAnonymously();
   }
 
   onAuthChanged(callback) {
-    firebase.auth().onAuthStateChanged(session => {
+    this.firebase.auth().onAuthStateChanged(session => {
       if (
         !session ||
         (!session.emailVerified &&
@@ -157,8 +147,8 @@ export class AuthService {
   }
 
   isLoggedIn() {
-    return firebase.auth().currentUser
-      ? firebase.auth().currentUser
+    return this.firebase.auth().currentUser
+      ? this.firebase.auth().currentUser
       : this.getFromStorage();
   }
 
@@ -180,7 +170,7 @@ export class AuthService {
   ): Promise<firebase.auth.UserCredential> {
     return new Promise((resolve, reject) => {
       try {
-        firebase
+        this.firebase
           .auth()
           .createUserWithEmailAndPassword(email, password)
           .then(data => {
@@ -196,13 +186,13 @@ export class AuthService {
   }
 
   sendEmailVerification(options?) {
-    return firebase
+    return this.firebase
       .auth()
       .currentUser.sendEmailVerification(options ? options : null);
   }
 
   sendPasswordReset(emailAddress: string, options?) {
-    return firebase
+    return this.firebase
       .auth()
       .sendPasswordResetEmail(emailAddress, options ? options : null);
   }
@@ -210,7 +200,7 @@ export class AuthService {
   withEmail(email: string, password: string) {
     return new Promise((resolve, reject) => {
       try {
-        firebase
+        this.firebase
           .auth()
           .signInWithEmailAndPassword(email, password)
           .then(user => {
@@ -330,11 +320,11 @@ export class AuthService {
   logout() {
     this.emitLoggedOutEvent();
 
-    return firebase.auth().signOut();
+    return this.firebase.auth().signOut();
   }
 
   async updatePassword(newPassword: string, credential) {
-    const user = firebase.auth().currentUser;
+    const user = this.firebase.auth().currentUser;
     if (credential) {
       await user.reauthenticateWithCredential(credential);
     }
