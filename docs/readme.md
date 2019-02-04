@@ -14,4 +14,5 @@
 14. Create app for Github (https://developer.github.com/apps/building-github-apps/creating-a-github-app/)
 15. Enable Github authentication in Firebase
 16. Enable Facebook authentication in Firebase
-17. 
+17. Setup commands for working wtih API
+18. Initialize Firebase and use config service
