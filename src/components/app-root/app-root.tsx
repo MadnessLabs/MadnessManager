@@ -1,9 +1,9 @@
 import { Component } from '@stencil/core';
 import firebase from 'firebase/app';
 
+import { AuthService } from '../../services/auth';
 import { ConfigService } from '../../services/config';
 import { DatabaseService } from '../../services/database';
-import { AuthService } from '../../services/auth';
 
 @Component({
   tag: 'app-root',
