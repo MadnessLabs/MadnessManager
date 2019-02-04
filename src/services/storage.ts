@@ -1,17 +1,14 @@
 /**
  * @module Services
  */
-// import firebase from 'firebase/app';
-// import 'firebase/storage';
-
-declare const firebase: any;
+import firebase from 'firebase/app';
+import 'firebase/storage';
 
 export class StorageService {
-  //service: firebase.storage.Storage;
-  service: any;
+  service: firebase.storage.Storage;
   
-  constructor() {
-    this.service = this.service ? this.service : firebase.storage();
+  constructor(firebase: firebase.app.App) {
+    this.service = firebase.storage();
   }
 
   async getPhotoUrl(ref) {
