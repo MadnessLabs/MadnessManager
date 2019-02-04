@@ -18,7 +18,7 @@ export class AppRoot {
     firebase: firebase.app.App;
   };
 
-  componentDidLoad() {
+  componentWillLoad() {
     const config = (new ConfigService).get();
     const app = firebase.initializeApp(config.firebase);
     this.globalProps = {

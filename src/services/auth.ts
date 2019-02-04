@@ -296,6 +296,8 @@ export class AuthService {
           provider = new firebase.auth.GoogleAuthProvider();
         } else if (network === 'twitter') {
           provider = new firebase.auth.TwitterAuthProvider();
+        } else if (network === 'github') {
+          provider = new firebase.auth.GithubAuthProvider();
         } else {
           reject({
             message:

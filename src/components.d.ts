@@ -9,6 +9,9 @@ import '@stencil/core';
 
 import '@ionic/core';
 import 'ionicons';
+import {
+  AuthService,
+} from './services/auth';
 
 
 export namespace Components {
@@ -17,9 +20,11 @@ export namespace Components {
   interface AppHomeAttributes extends StencilHTMLAttributes {}
 
   interface AppLogin {
+    'auth': AuthService;
     'firebase': firebase.app.App;
   }
   interface AppLoginAttributes extends StencilHTMLAttributes {
+    'auth'?: AuthService;
     'firebase'?: firebase.app.App;
   }
 
